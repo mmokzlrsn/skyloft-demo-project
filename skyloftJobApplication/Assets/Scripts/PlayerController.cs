@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
 
     //[Header("Speed")]
     
-    private float acceleration = 1.2f;
+    private float acceleration = 3f;
     float maxSpeed = 30;
     public float speed = 0;
     private float knockbackPower = 3.0f;
@@ -60,7 +60,7 @@ public class PlayerController : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit))
             {
-                if (hit.collider == roadCollider)
+                if (hit.collider.CompareTag("Road"))
                 {
                 
                     transform.position = Vector3.MoveTowards(new Vector3(transform.position.x, transform.position.y, transform.position.z), new Vector3(hit.point.x, transform.position.y, transform.position.z), Time.deltaTime * speed);
