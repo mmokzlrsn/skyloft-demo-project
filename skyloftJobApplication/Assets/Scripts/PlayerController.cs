@@ -13,15 +13,16 @@ public class PlayerController : MonoBehaviour
     Ray ray;
 
     Vector3 startPos;
-    
 
+    [SerializeField]
+    private Vector3 _rotation;
 
     private float zStartPos;
 
     //[Header("Speed")]
     
-    private float acceleration = 3f;
-    float maxSpeed = 30;
+    private float acceleration = 8f;
+    float maxSpeed = 32;
     public float speed = 0;
     private float knockbackPower = 3.0f;
 
@@ -62,7 +63,12 @@ public class PlayerController : MonoBehaviour
             {
                 if (hit.collider.CompareTag("Road"))
                 {
-                
+
+                    //transform rotation movement Make it max Rotate scale then apply it to both sides using only - sign Create speed variable according to the accelaration? 
+                    //transform.Rotate(_rotation * 2.0f * Time.deltaTime);
+                     
+
+                    //transform position movement
                     transform.position = Vector3.MoveTowards(new Vector3(transform.position.x, transform.position.y, transform.position.z), new Vector3(hit.point.x, transform.position.y, transform.position.z), Time.deltaTime * speed);
                     Debug.Log("You clicked SafeArea");
 
