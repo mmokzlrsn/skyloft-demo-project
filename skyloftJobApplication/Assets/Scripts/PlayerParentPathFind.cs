@@ -1,22 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class PlayerParentPathFind : MonoBehaviour
 {
 
-    private Vector3 startPos;
+    private NavMeshAgent navMeshAgent;
 
-    public Transform motorcycle;
+    [SerializeField]
+    private Transform finish;
+
+
+    //public Transform motorcycle;
 
     void Start()
     {
-        startPos = transform.position;
+        navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.position = startPos + motorcycle.position;
+        navMeshAgent.destination = finish.position;
     }
 }
