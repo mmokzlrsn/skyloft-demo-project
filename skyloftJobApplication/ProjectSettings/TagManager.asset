@@ -7,6 +7,7 @@ TagManager:
   - Obstacle
   - DeadZone
   - Road
+  - FinishLine
   layers:
   - Default
   - TransparentFX

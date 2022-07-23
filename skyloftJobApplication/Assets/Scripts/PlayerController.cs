@@ -90,6 +90,12 @@ public class PlayerController : MonoBehaviour
             Debug.Log("You are dead ");
             
         }
+
+        if(other.CompareTag("FinishLine"))
+        {
+            transform.position = startPos;
+            Debug.Log("You Won ");
+        }
     }
     
 
@@ -118,7 +124,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void knockbackPush(Collision collision)
+    private void knockbackPush(Collision collision)
     {
         Rigidbody playerRB = gameObject.GetComponent<Rigidbody>();
 
@@ -131,6 +137,7 @@ public class PlayerController : MonoBehaviour
         Debug.Log("OnCollisionEnter" + speed);
     }
 
+    
 
 
 
