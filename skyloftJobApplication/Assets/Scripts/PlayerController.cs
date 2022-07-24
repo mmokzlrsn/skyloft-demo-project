@@ -7,8 +7,11 @@ public class PlayerController : MonoBehaviour
     private Transform player;
     Camera _camera;
     Collider roadCollider;
-     
- 
+
+    [SerializeField]
+    private float directionSpeed = 10.0f; // adjust this with accelaration? this variable is used for left right movement 
+
+
     RaycastHit hit;
     Ray ray;
 
@@ -24,6 +27,8 @@ public class PlayerController : MonoBehaviour
     private float acceleration = 8f;
     float maxSpeed = 32;
     public float speed = 0;
+
+
     private float knockbackPower = 3.0f;
 
     // Start is called before the first frame update
@@ -41,6 +46,13 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+
+        Movement();
+    }
+
+    public void ToGoForward()
+    {
         if (speed < maxSpeed)
         {
             speed += acceleration * Time.deltaTime;
@@ -48,7 +60,6 @@ public class PlayerController : MonoBehaviour
 
         transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + speed * Time.deltaTime);
 
-        Movement();
     }
 
     public void Movement()
@@ -69,7 +80,7 @@ public class PlayerController : MonoBehaviour
                      
 
                     //transform position movement
-                    transform.position = Vector3.MoveTowards(new Vector3(transform.position.x, transform.position.y, transform.position.z), new Vector3(hit.point.x, transform.position.y, transform.position.z), Time.deltaTime * speed);
+                    transform.position = Vector3.MoveTowards(new Vector3(transform.position.x, transform.position.y, transform.position.z), new Vector3(hit.point.x, transform.position.y, transform.position.z), Time.deltaTime * directionSpeed);
                     Debug.Log("You clicked SafeArea");
 
 
