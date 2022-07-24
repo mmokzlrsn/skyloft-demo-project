@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         _camera = GameObject.Find("Main Camera").GetComponent<Camera>();
-        roadCollider = GameObject.Find("Road").GetComponent<Collider>();
+        //roadCollider = GameObject.Find("Road").GetComponent<Collider>();
          
         zStartPos = transform.position.z;
 
