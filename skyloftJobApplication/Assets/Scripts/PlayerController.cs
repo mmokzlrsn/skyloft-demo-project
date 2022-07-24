@@ -81,6 +81,8 @@ public class PlayerController : MonoBehaviour
 
                     //transform position movement
                     transform.position = Vector3.MoveTowards(new Vector3(transform.position.x, transform.position.y, transform.position.z), new Vector3(hit.point.x, transform.position.y, transform.position.z), Time.deltaTime * directionSpeed);
+                    //transform.rotation = Vector3.RotateTowards(new Vector3(transform.position.x, transform.position.y, transform.position.z), new Vector3(hit.point.x, transform.position.y, transform.position.z), Time.deltaTime * directionSpeed);
+
                     Debug.Log("You clicked SafeArea");
 
 
