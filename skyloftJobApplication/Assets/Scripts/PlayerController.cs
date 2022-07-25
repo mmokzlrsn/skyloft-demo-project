@@ -149,7 +149,7 @@ public class PlayerController : MonoBehaviour
     private void rotateMotor()
     {
         Vector3 clickedPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        clickedPosition = transform.InverseTransformPoint(clickedPosition);
+         
         /*
         if (clickedPosition.x < 0)
         {
@@ -167,7 +167,7 @@ public class PlayerController : MonoBehaviour
         else
             Debug.Log("Middle");
         */
-        if (clickedPosition.x > 0)
+        if (clickedPosition.x < transform.localPosition.x)
         {
             Debug.Log("RightRotateAnim");
             animator.SetBool("LeftLean", false);
@@ -175,7 +175,7 @@ public class PlayerController : MonoBehaviour
       
             Debug.Log("Right");
         }
-        if (clickedPosition.x < 0)
+        if (clickedPosition.x > transform.localPosition.x)
 
         {
             animator.SetBool("LeftLean", true);
