@@ -1,44 +1,46 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
 {
-    private Transform player;
     Camera _camera;
-    Collider roadCollider;
-
+ 
     [SerializeField]
     private float directionSpeed = 10.0f; // adjust this with accelaration? this variable is used for left right movement 
 
+    [SerializeField]
+    private UnityEvent onCrash;
 
     RaycastHit hit;
     Ray ray;
 
     Vector3 startPos;
 
-    [SerializeField]
-    private Vector3 _rotation;
-
-    private float zStartPos;
+    private Animator animator;
+     
+ 
 
     //[Header("Speed")]
     
-    private float acceleration = 8f;
-    float maxSpeed = 32;
-    public float speed = 0;
+     
+ 
 
 
     private float knockbackPower = 3.0f;
 
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
     // Start is called before the first frame update
     void Start()
     {
         _camera = GameObject.Find("Main Camera").GetComponent<Camera>();
         //roadCollider = GameObject.Find("Road").GetComponent<Collider>();
-         
-        zStartPos = transform.position.z;
-
+ 
         startPos = transform.position;
 
     }
@@ -46,25 +48,12 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-
         Movement();
     }
-
-    public void ToGoForward()
-    {
-        if (speed < maxSpeed)
-        {
-            speed += acceleration * Time.deltaTime;
-        }
-
-        transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + speed * Time.deltaTime);
-
-    }
-
+     
     public void Movement()
     {
-        //transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + moveSpeed * Time.deltaTime);
+         //transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + speed * Time.deltaTime);
 
         if (Input.GetMouseButton(0))
         {
@@ -72,16 +61,18 @@ public class PlayerController : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit))
             {
+                rotateMotor();
                 if (hit.collider.CompareTag("Road"))
-                {
-
-                    //transform rotation movement Make it max Rotate scale then apply it to both sides using only - sign Create speed variable according to the accelaration? 
-                    //transform.Rotate(_rotation * 2.0f * Time.deltaTime);
+                { 
                      
-
+                    //trans.ç.for . righr b 
+                    //hit.point - trannsform.position
+                    //.trekrar transform . right ile çarp
                     //transform position movement
-                    transform.position = Vector3.MoveTowards(new Vector3(transform.position.x, transform.position.y, transform.position.z), new Vector3(hit.point.x, transform.position.y, transform.position.z), Time.deltaTime * directionSpeed);
-                    //transform.rotation = Vector3.RotateTowards(new Vector3(transform.position.x, transform.position.y, transform.position.z), new Vector3(hit.point.x, transform.position.y, transform.position.z), Time.deltaTime * directionSpeed);
+
+                    transform.position = Vector3.MoveTowards(new Vector3(transform.position.x, transform.position.y, transform.position.z), new Vector3(hit.point.x , transform.position.y, hit.point.z), Time.deltaTime * directionSpeed);
+
+                    
 
                     Debug.Log("You clicked SafeArea");
 
@@ -109,8 +100,15 @@ public class PlayerController : MonoBehaviour
             transform.position = startPos;
             Debug.Log("You Won ");
         }
+        if (other.CompareTag("Obstacle"))
+        {
+            onCrash?.Invoke(); // ?. check for null if not call the function  //null propagation
+            Debug.Log("Obstacle Trigger");
+            animator.SetTrigger("Knockback");
+        }
+ 
     }
-    
+
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -145,12 +143,74 @@ public class PlayerController : MonoBehaviour
 
         //create knockback types according to the speed
         playerRB.AddForce(knockback * knockbackPower , ForceMode.Impulse);
-        speed = 0;
-
-        Debug.Log("OnCollisionEnter" + speed);
+         
     }
 
-    
+    private void rotateMotor()
+    {
+        Vector3 clickedPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        clickedPosition = transform.InverseTransformPoint(clickedPosition);
+        /*
+        if (clickedPosition.x < 0)
+        {
+            Debug.Log("RightRotateAnim");
+            animator.SetBool("LeftLean", false);
+            animator.SetBool("RightLean", true);
+            Debug.Log("Right");
+        }
+        else if (clickedPosition.x > 0)
+        {
+            animator.SetBool("LeftLean", true);
+            animator.SetBool("RightLean", false);
+            Debug.Log("Left");
+        }
+        else
+            Debug.Log("Middle");
+        */
+        if (clickedPosition.x > 0)
+        {
+            Debug.Log("RightRotateAnim");
+            animator.SetBool("LeftLean", false);
+            animator.SetBool("RightLean", true);
+      
+            Debug.Log("Right");
+        }
+        if (clickedPosition.x < 0)
+
+        {
+            animator.SetBool("LeftLean", true);
+            animator.SetBool("RightLean", false);
+            Debug.Log("Left");
+        }
+            
+
+
+        /*
+        if (hit.point.x - transform.position.x < transform.position.x)
+        {
+            //left rotate anim
+            Debug.Log("LeftRotateAnim");
+            animator.SetBool("LeftLean", true);
+            animator.SetBool("RightLean", false);
+        }
+
+        else if (hit.point.x - transform.position.x > transform.position.x)
+        {
+            //right rotate anim
+            Debug.Log("RightRotateAnim");
+            animator.SetBool("LeftLean", false);
+            animator.SetBool("RightLean", true);
+        }
+            
+        else
+        {
+            //idle anim
+            Debug.Log("IdleAnim");
+            animator.SetBool("LeftLean", false);
+            animator.SetBool("RightLean", false);
+        }
+        */
+    }
 
 
 
